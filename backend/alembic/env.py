@@ -1,13 +1,13 @@
 from logging.config import fileConfig
-
 from sqlalchemy import engine_from_config, pool
 from alembic import context
+import sys
+from pathlib import Path
 
-from app.config import get_settings
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
 from app.database import Base
-
-# Import all models here so Alembic can detect them
-# from app.models import user, task
+from app.config import get_settings
 
 config = context.config
 settings = get_settings()
