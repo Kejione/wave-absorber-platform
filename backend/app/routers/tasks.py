@@ -9,6 +9,7 @@ from app.models.task import Task
 from app.schemas.task import TaskResponse, TaskDetailResponse
 from app.routers.auth import get_current_user_id
 from app.services.file_service import save_upload_file, delete_file
+from app.services.calculation_service import run_calculation
 from datetime import datetime
 
 router = APIRouter(prefix="/api/tasks", tags=["tasks"])
@@ -45,6 +46,20 @@ async def create_task(
     db.add(task)
     db.commit()
     db.refresh(task)
+
+    # Run calculation
+    try:
+        result_path, result_data = run_calculation(file_path, parsed_params)
+        task.status = "completed"
+        task.result_path = result_path
+        task.completed_at = datetime.utcnow()
+        db.commit()
+        db.refresh(task)
+    except Exception as e:
+        task.status = "failed"
+        task.error_message = str(e)
+        task.completed_at = datetime.utcnow()
+        db.commit()
 
     return task
 
