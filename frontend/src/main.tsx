@@ -1,4 +1,3 @@
-import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { ConfigProvider } from 'antd'
@@ -7,13 +6,11 @@ import { AuthProvider } from '@/stores/auth'
 import App from './App'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <ConfigProvider locale={zhCN}>
-        <AuthProvider>
-          <App />
-        </AuthProvider>
-      </ConfigProvider>
-    </BrowserRouter>
-  </React.StrictMode>,
+  <BrowserRouter>
+    <ConfigProvider locale={zhCN}>
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    </ConfigProvider>
+  </BrowserRouter>,
 )
